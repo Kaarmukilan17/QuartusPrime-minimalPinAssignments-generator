@@ -1,0 +1,210 @@
+{
+  "CLOCK_50": {
+    "pin": "Y2",
+    "io_standard": "3.3-V LVTTL"
+  },
+  "KEY": {
+    "3": {
+      "pin": "R24",
+      "io_standard": "2.5 V"
+    },
+    "2": {
+      "pin": "N21",
+      "io_standard": "2.5 V"
+    },
+    "1": {
+      "pin": "M21",
+      "io_standard": "2.5 V"
+    },
+    "0": {
+      "pin": "M23",
+      "io_standard": "2.5 V"
+    }
+  },
+  "LEDG": {
+    "8": {
+      "pin": "F17",
+      "io_standard": "2.5 V"
+    },
+    "7": {
+      "pin": "G21",
+      "io_standard": "2.5 V"
+    },
+    "6": {
+      "pin": "G22",
+      "io_standard": "2.5 V"
+    },
+    "5": {
+      "pin": "G20",
+      "io_standard": "2.5 V"
+    },
+    "4": {
+      "pin": "H21",
+      "io_standard": "2.5 V"
+    },
+    "3": {
+      "pin": "E24",
+      "io_standard": "2.5 V"
+    },
+    "2": {
+      "pin": "E25",
+      "io_standard": "2.5 V"
+    },
+    "1": {
+      "pin": "E22",
+      "io_standard": "2.5 V"
+    },
+    "0": {
+      "pin": "E21",
+      "io_standard": "2.5 V"
+    }
+  },
+  "LEDR": {
+    "17": {
+      "pin": "H15",
+      "io_standard": "2.5 V"
+    },
+    "16": {
+      "pin": "G16",
+      "io_standard": "2.5 V"
+    },
+    "15": {
+      "pin": "G15",
+      "io_standard": "2.5 V"
+    },
+    "14": {
+      "pin": "F15",
+      "io_standard": "2.5 V"
+    },
+    "13": {
+      "pin": "H17",
+      "io_standard": "2.5 V"
+    },
+    "12": {
+      "pin": "J16",
+      "io_standard": "2.5 V"
+    },
+    "11": {
+      "pin": "H16",
+      "io_standard": "2.5 V"
+    },
+    "10": {
+      "pin": "J15",
+      "io_standard": "2.5 V"
+    },
+    "9": {
+      "pin": "G17",
+      "io_standard": "2.5 V"
+    },
+    "8": {
+      "pin": "J17",
+      "io_standard": "2.5 V"
+    },
+    "7": {
+      "pin": "H19",
+      "io_standard": "2.5 V"
+    },
+    "6": {
+      "pin": "J19",
+      "io_standard": "2.5 V"
+    },
+    "5": {
+      "pin": "E18",
+      "io_standard": "2.5 V"
+    },
+    "4": {
+      "pin": "F18",
+      "io_standard": "2.5 V"
+    },
+    "3": {
+      "pin": "F21",
+      "io_standard": "2.5 V"
+    },
+    "2": {
+      "pin": "E19",
+      "io_standard": "2.5 V"
+    },
+    "1": {
+      "pin": "F19",
+      "io_standard": "2.5 V"
+    },
+    "0": {
+      "pin": "G19",
+      "io_standard": "2.5 V"
+    }
+  },
+  "SW": {
+    "17": {
+      "pin": "Y23",
+      "io_standard": "2.5 V"
+    },
+    "16": {
+      "pin": "Y24",
+      "io_standard": "2.5 V"
+    },
+    "15": {
+      "pin": "AA22",
+      "io_standard": "2.5 V"
+    },
+    "14": {
+      "pin": "AA23",
+      "io_standard": "2.5 V"
+    },
+    "13": {
+      "pin": "AA24",
+      "io_standard": "2.5 V"
+    },
+    "12": {
+      "pin": "AB23",
+      "io_standard": "2.5 V"
+    },
+    "11": {
+      "pin": "AB24",
+      "io_standard": "2.5 V"
+    },
+    "10": {
+      "pin": "AC24",
+      "io_standard": "2.5 V"
+    },
+    "9": {
+      "pin": "AB25",
+      "io_standard": "2.5 V"
+    },
+    "8": {
+      "pin": "AC25",
+      "io_standard": "2.5 V"
+    },
+    "7": {
+      "pin": "AB26",
+      "io_standard": "2.5 V"
+    },
+    "6": {
+      "pin": "AD26",
+      "io_standard": "2.5 V"
+    },
+    "5": {
+      "pin": "AC26",
+      "io_standard": "2.5 V"
+    },
+    "4": {
+      "pin": "AB27",
+      "io_standard": "2.5 V"
+    },
+    "3": {
+      "pin": "AD27",
+      "io_standard": "2.5 V"
+    },
+    "2": {
+      "pin": "AC27",
+      "io_standard": "2.5 V"
+    },
+    "1": {
+      "pin": "AC28",
+      "io_standard": "2.5 V"
+    },
+    "0": {
+      "pin": "AB28",
+      "io_standard": "2.5 V"
+    }
+  }
+}
