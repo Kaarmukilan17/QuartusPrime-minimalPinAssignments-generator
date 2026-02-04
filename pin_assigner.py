@@ -1,5 +1,6 @@
 import sys
 import re
+import json
 
 def parse_verilog_ports(verilog_path):
     with open(verilog_path, "r") as f:
@@ -30,6 +31,33 @@ def parse_verilog_ports(verilog_path):
 
     return ports
 
+
+def load_board_db(json_path="de2_115_pins.json"):
+    with open(json_path, "r") as f:
+        return json.load(f)
+
+
+def get_choices_for_port(port, board_db):
+    choices = []
+
+    if port["dir"] == "input":
+        if "CLOCK_50" in board_db:
+            choices.append("CLOCK_50")
+
+        for group in ("KEY", "SW"):
+            if group in board_db:
+                for idx in board_db[group]:
+                    choices.append(f"{group}[{idx}]")
+
+    elif port["dir"] == "output":
+        for group in ("LEDR", "LEDG"):
+            if group in board_db:
+                for idx in board_db[group]:
+                    choices.append(f"{group}[{idx}]")
+
+    return choices
+
+
 def main():
     if len(sys.argv) == 1:
 
@@ -44,10 +72,17 @@ def main():
         sys.exit(1)
 
     ports = parse_verilog_ports(verilog_file)
+    board_db = load_board_db()
 
-    print("Parsed ports:")
+    print("Parsed ports and allowed board choices:\n")
+
     for p in ports:
-        print(f"  {p['dir']:6} {p['name']}")
+        choices = get_choices_for_port(p, board_db)
+        print(f"{p['name']} ({p['dir']}):")
+        for c in choices:
+            print(f"  - {c}")
+        print()
+
 
 
 
