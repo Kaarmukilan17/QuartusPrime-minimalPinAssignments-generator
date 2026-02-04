@@ -2,12 +2,16 @@ import sys
 import re
 import json
 
+
 def parse_verilog_ports(verilog_path):
     with open(verilog_path, "r") as f:
         text = f.read()
 
-    # Find first module declaration
-    module_match = re.search(r"module\s+\w+\s*\((.*?)\);\s*endmodule", text, re.S)
+    module_match = re.search(
+        r"module\s+\w+\s*\((.*?)\);\s*endmodule",
+        text,
+        re.S
+    )
     if not module_match:
         raise RuntimeError("No valid module found")
 
@@ -19,17 +23,55 @@ def parse_verilog_ports(verilog_path):
         if not line:
             continue
 
-        m = re.match(r"(input|output)\s+(\w+)", line)
+        m = re.match(
+            r"(input|output)\s*(?:\[\s*(\d+)\s*:\s*(\d+)\s*\]\s*)?(\w+)",
+            line
+        )
         if not m:
             raise RuntimeError(f"Unsupported port format: {line}")
 
-        direction, name = m.groups()
+        direction, msb, lsb, name = m.groups()
+
+        if msb is None:
+            msb = lsb = 0
+        else:
+            msb = int(msb)
+            lsb = int(lsb)
+
         ports.append({
             "name": name,
-            "dir": direction
+            "dir": direction,
+            "msb": msb,
+            "lsb": lsb
         })
 
     return ports
+
+def expand_ports(ports):
+    expanded = []
+
+    for p in ports:
+        # Single-bit signal
+        if p["msb"] == p["lsb"]:
+            expanded.append({
+                "name": p["name"],
+                "base": p["name"],
+                "index": None,
+                "dir": p["dir"]
+            })
+        else:
+            # Bus: expand MSB -> LSB
+            step = -1 if p["msb"] > p["lsb"] else 1
+            for i in range(p["msb"], p["lsb"] + step, step):
+                expanded.append({
+                    "name": f"{p['name']}[{i}]",
+                    "base": p["name"],
+                    "index": i,
+                    "dir": p["dir"]
+                })
+
+    return expanded
+
 
 
 def load_board_db(json_path="de2_115_pins.json"):
@@ -128,9 +170,11 @@ def main():
 
 # Parse ports and load board database
     ports = parse_verilog_ports(verilog_file)
+    
+    expanded_ports = expand_ports(ports)
     board_db = load_board_db()
 
-    mapping = prompt_user_for_mapping(ports, board_db)
+    mapping = prompt_user_for_mapping(expanded_ports, board_db)
 
     print("\nFinal mapping:")
     for k, v in mapping.items():
@@ -139,9 +183,8 @@ def main():
     write_qsf(mapping, board_db)
     print("\nGenerated design_pins.qsf")
 
-
-
-
+    # Debug: print parsed ports
+   # print(parse_verilog_ports("test_top.v"))
 
 
 '''
