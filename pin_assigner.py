@@ -2,6 +2,9 @@ import sys
 import re
 import json
 
+#for grouping ports by bus name (e.g. SW[0], SW[1] -> SW)
+from collections import OrderedDict
+
 
 def parse_verilog_ports(verilog_path):
     with open(verilog_path, "r") as f:
@@ -74,6 +77,25 @@ def expand_ports(ports):
 
 
 
+def group_ports_by_bus(expanded_ports):
+    buses = OrderedDict()
+
+    for p in expanded_ports:
+        base = p["base"]
+
+        if base not in buses:
+            buses[base] = {
+                "dir": p["dir"],
+                "bits": []
+            }
+
+        buses[base]["bits"].append(p)
+
+    return buses
+
+
+
+
 def load_board_db(json_path="de2_115_pins.json"):
     with open(json_path, "r") as f:
         return json.load(f)
@@ -127,7 +149,45 @@ def prompt_user_for_mapping(ports, board_db):
                 print("Please enter a number.")
 
     return mapping
+# Alternative mapping function that groups ports by bus name (e.g. SW[0], SW[1] -> SW)
+def prompt_user_for_mapping_grouped(buses, board_db):
+    mapping = {}
+    used = set()
 
+    for bus_name, bus in buses.items():
+        bits = bus["bits"]
+        dirn = bus["dir"]
+
+        if len(bits) > 1:
+            msb = bits[0]["index"]
+            lsb = bits[-1]["index"]
+            print(f"\nBus: {bus_name}[{msb}:{lsb}] ({dirn})")
+        else:
+            print(f"\nSignal: {bus_name} ({dirn})")
+
+        for bit in bits:
+            choices = get_choices_for_port(bit, board_db)
+            filtered = [c for c in choices if c not in used]
+
+            print(f"\n  {bit['name']}:")
+
+            for i, choice in enumerate(filtered):
+                print(f"    {i+1}) {choice}")
+
+            while True:
+                try:
+                    sel = int(input("    Select option number: "))
+                    if 1 <= sel <= len(filtered):
+                        selected = filtered[sel - 1]
+                        mapping[bit["name"]] = selected
+                        used.add(selected)
+                        break
+                    else:
+                        print("    Invalid selection.")
+                except ValueError:
+                    print("    Enter a number.")
+
+    return mapping
 
 def write_qsf(mapping, board_db, out_file="design_pins.qsf"):
     with open(out_file, "w") as f:
@@ -174,7 +234,10 @@ def main():
     expanded_ports = expand_ports(ports)
     board_db = load_board_db()
 
-    mapping = prompt_user_for_mapping(expanded_ports, board_db)
+
+    buses = group_ports_by_bus(expanded_ports)
+    mapping = prompt_user_for_mapping_grouped(buses, board_db)
+
 
     print("\nFinal mapping:")
     for k, v in mapping.items():
