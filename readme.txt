@@ -131,3 +131,22 @@ Future versions may add:
 * Bus handling
 * Non-interactive config mode
 * GUI / board image selection
+
+
+
+# VERSION 1
+
+Changes in V1
+
+Added support for multi-bit (bus) ports in Verilog (e.g. led[3:0])
+Buses are expanded into individual bit-level signals for pin assignment
+Generated .qsf uses Quartus-compatible bit assignments (signal[index])
+Prevents duplicate pin usage across all assigned signals
+Supports only LED, SWITCH, KEY, and CLOCK_50 inputs/outputs
+
+Changes in V1.1
+
+Improved CLI readability by grouping bus signals together
+Displays buses as a single unit (e.g. led[3:0]) during selection
+No change to generated .qsf or hardware behavior
+Purely a usability / UX improvement
