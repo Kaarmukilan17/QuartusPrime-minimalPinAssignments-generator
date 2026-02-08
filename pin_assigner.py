@@ -177,8 +177,10 @@ def prompt_user_for_mapping_grouped(buses, board_db):
     for bus_name, bus in buses.items():
         bits = bus["bits"]
         dirn = bus["dir"]
+        bus_width = len(bits)
+        name_lower = bus_name.lower()
 
-        if len(bits) > 1:
+        if bus_width > 1:
             msb = bits[0]["index"]
             lsb = bits[-1]["index"]
             print(f"\nBus: {bus_name}[{msb}:{lsb}] ({dirn})")
@@ -186,11 +188,44 @@ def prompt_user_for_mapping_grouped(buses, board_db):
             print(f"\nSignal: {bus_name} ({dirn})")
 
         for bit in bits:
+            # Get ALL possible board connections
             choices = get_choices_for_port(bit, board_db)
-            filtered = [c for c in choices if c not in used]
+
+            filtered_choices = []
+
+            # ---------- INPUT PORTS ----------
+            if dirn == "input":
+                filtered_choices = [
+                    c for c in choices
+                    if c.startswith("CLOCK")
+                    or c.startswith("KEY")
+                    or c.startswith("SW")
+                ]
+
+            # ---------- OUTPUT PORTS ----------
+            elif dirn == "output":
+                # Default: LEDs only
+                filtered_choices = [
+                    c for c in choices
+                    if c.startswith("LEDR") or c.startswith("LEDG")
+                ]
+
+                # HEX unlock by bus width
+                if bus_width == 7:
+                    filtered_choices += [
+                        c for c in choices if c.startswith("HEX")
+                    ]
+
+                # LCD unlock by signal name
+                if "lcd" in name_lower:
+                    filtered_choices += [
+                        c for c in choices if c.startswith("LCD")
+                    ]
+
+            # Remove already-used pins
+            filtered = [c for c in filtered_choices if c not in used]
 
             print(f"\n  {bit['name']}:")
-
             for i, choice in enumerate(filtered):
                 print(f"    {i+1}) {choice}")
 
@@ -208,6 +243,7 @@ def prompt_user_for_mapping_grouped(buses, board_db):
                     print("    Enter a number.")
 
     return mapping
+
 
 def write_qsf(mapping, board_db, out_file="design_pins.qsf"):
     with open(out_file, "w") as f:

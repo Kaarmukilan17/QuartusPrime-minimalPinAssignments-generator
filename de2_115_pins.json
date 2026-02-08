@@ -265,8 +265,46 @@
     "pin": "L6",
     "io_standard": "3.3-V LVTTL"
   },
+  "LCD_DATA": {
+    "7": {
+      "pin": "M5",
+      "io_standard": "3.3-V LVTTL"
+    },
+    "6": {
+      "pin": "M3",
+      "io_standard": "3.3-V LVTTL"
+    },
+    "5": {
+      "pin": "K2",
+      "io_standard": "3.3-V LVTTL"
+    },
+    "4": {
+      "pin": "K1",
+      "io_standard": "3.3-V LVTTL"
+    },
+    "3": {
+      "pin": "K7",
+      "io_standard": "3.3-V LVTTL"
+    },
+    "2": {
+      "pin": "L2",
+      "io_standard": "3.3-V LVTTL"
+    },
+    "1": {
+      "pin": "L1",
+      "io_standard": "3.3-V LVTTL"
+    },
+    "0": {
+      "pin": "L3",
+      "io_standard": "3.3-V LVTTL"
+    }
+  },
   "LCD_EN": {
     "pin": "L4",
+    "io_standard": "3.3-V LVTTL"
+  },
+  "LCD_ON": {
+    "pin": "L5",
     "io_standard": "3.3-V LVTTL"
   },
   "LCD_RS": {
