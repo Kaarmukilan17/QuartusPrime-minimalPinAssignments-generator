@@ -1,5 +1,4 @@
-module top(
-    input  [1:0] btn,
-    output [3:0] led
+module test_lcd_data (
+    output [7:0] lcd_data
 );
 endmodule

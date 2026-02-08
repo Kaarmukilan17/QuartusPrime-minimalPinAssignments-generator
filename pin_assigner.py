@@ -100,10 +100,10 @@ def load_board_db(json_path="de2_115_pins.json"):
     with open(json_path, "r") as f:
         return json.load(f)
 
-
 def get_choices_for_port(port, board_db):
     choices = []
 
+    # -------- INPUT PORTS --------
     if port["dir"] == "input":
         if "CLOCK_50" in board_db:
             choices.append("CLOCK_50")
@@ -113,13 +113,33 @@ def get_choices_for_port(port, board_db):
                 for idx in board_db[group]:
                     choices.append(f"{group}[{idx}]")
 
+    # -------- OUTPUT PORTS --------
     elif port["dir"] == "output":
+        # LEDs
         for group in ("LEDR", "LEDG"):
             if group in board_db:
                 for idx in board_db[group]:
                     choices.append(f"{group}[{idx}]")
 
+        # HEX displays
+        for hx in range(8):
+            key = f"HEX{hx}"
+            if key in board_db:
+                for idx in board_db[key]:
+                    choices.append(f"{key}[{idx}]")
+
+        # LCD data bus
+        if "LCD_DATA" in board_db:
+            for idx in board_db["LCD_DATA"]:
+                choices.append(f"LCD_DATA[{idx}]")
+
+        # LCD control signals
+        for sig in ("LCD_RS", "LCD_RW", "LCD_EN", "LCD_BLON"):
+            if sig in board_db:
+                choices.append(sig)
+
     return choices
+
 def prompt_user_for_mapping(ports, board_db):
     mapping = {}
     used = set()
