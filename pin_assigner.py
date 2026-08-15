@@ -11,7 +11,7 @@ def parse_verilog_ports(verilog_path):
         text = f.read()
 
     module_match = re.search(
-        r"module\s+\w+\s*\((.*?)\);\s*endmodule",
+        r"module\s+\w+\s*\((.*?)\)\s*;",
         text,
         re.S
     )
